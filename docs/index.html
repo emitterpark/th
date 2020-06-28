@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>LoRaWAN Wireless DAQ</title>
+  <!-- Origin Trial Token, feature = WebUSB (For Chrome M57+), origin = https://webusb.github.io, expires = 2017-06-19 -->
+  <meta http-equiv="origin-trial" data-feature="WebUSB (For Chrome M57+)" data-expires="2017-06-19" content="Ag83MurQOa5N4SKRCqqtSlbycfe08s5LgUiqEI7J3jTk2NEIpRp7SLPz2i+EBDuXyf+AeRMdD6BI++kTSJmGzQEAAABReyJvcmlnaW4iOiJodHRwczovL3dlYnVzYi5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IldlYlVTQjIiLCJleHBpcnkiOjE0OTc4OTM2OTV9">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">    
+</head>
+<body>
+<div class="container" id="main-div">
+
+  <div id="header-div" class="text-center" style="position: relative;top: 50%;transform: translateY(150%);">
+    <h6 id="device"></h6>
+    <h6 id="version"></h6>
+  </div>  
+
+  <div id="button-div" style="position: relative;top: 50%;transform: translateY(50%);">    
+    <button type="button" class="btn btn-secondary btn-lg btn-block" id="connect-btn">CONNECT</button>
+    <button type="button" class="btn btn-secondary btn-lg btn-block" id="lorawan-btn">LORAWAN</button>
+    <button type="button" class="btn btn-secondary btn-lg btn-block" id="channels-btn">CHANNELS</button>
+    <button type="button" class="btn btn-secondary btn-lg btn-block" id="at-modem-btn">AT MODEM</button>
+  </div>
+  
+  <div id="form-div" hidden>
+    <br>
+    <form onsubmit="return false" id="lorawan-form">
+      <div id="lorawan-div"></div>
+      <br>
+      <button type="submit" class="btn btn-secondary btn-lg btn-block" form="lorawan-form" id="lorawan-save-btn">SAVE</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block"id ="lorawan-back-btn">BACK</button>      
+    </form>    
+    <form class="accordion" onsubmit="return false" id="channels-form">
+      <div id="analog-div"></div>
+      <br>
+      <button type="button" class="btn btn-secondary btn-lg btn-block"id ="channels-report-btn">REPORT</button>
+      <button type="submit" class="btn btn-secondary btn-lg btn-block" form="channels-form" id="channels-save-btn">SAVE</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block"id ="channels-back-btn">BACK</button>        
+    </form>
+    <form onsubmit="return false" id="at-modem-form">
+      <div id="at-modem-div"></div>
+      <br>
+      <button type="submit" class="btn btn-secondary btn-lg btn-block" form="at-modem-form" id="at-modem-send-btn">SEND</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block"id ="at-modem-back-btn">BACK</button>      
+    </form> 
+    <br>  
+  </div>  
+  
+</div>
+<script src="serial.js"></script>
+<script src="th.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<template>
+  <div id="lorawan"> 
+    <br>    
+    <label for="dev-eui">Dev EUI:</label>
+    <input id="dev_eui" type="text" required class="form-control" value="0000000000000000" pattern="[0-9A-F]{16}" maxlength ="16" name="dev-eui">    
+    <label for="app-eui">App EUI:</label>
+    <input id="app_eui" type="text" required class="form-control" value="0000000000000000" pattern="[0-9A-F]{16}" maxlength ="16" name="app-eui">                
+    <label for="app-key">App KEY:</label>
+    <input id="app_key" type="text" required class="form-control" value="00000000000000000000000000000000" pattern="[0-9A-F]{32}" maxlength ="32" name="app-key">    
+    <label for="region">Region:</label>
+    <select id="region" class="form-control" name="region">
+      <option value = "EU868" selected>EU868</option>
+      <option value = "US915">US915</option>
+      <option value = "AU915" >AU915</option>
+      <option value = "AS923">AS923</option>
+      <option value = "IN865">IN865</option>
+      <option value = "KR920">KR920</option>
+    </select>      
+    <label for="dr">Data Rate:</label>
+    <select id="xlru08" class="form-control" name="dr">
+      <option value = "0">0 - SF12BW125</option>
+      <option value = "1">1 - SF11BW125</option>
+      <option value = "2" selected>2 - SF10BW125</option>
+      <option value = "3">3 - SF9BW125</option>
+      <option value = "4">4 - SF8BW125</option>
+      <option value = "5">5 - SF7BW125</option>
+    </select>  
+    <label for="port">Port:</label>
+    <input  id="xlru08" type="number" required class="form-control" value="90" min="1" max="223" step="1" maxlength="3" name="port">
+    <label for="report">Report Interval (Minutes 5-240):</label>
+    <input id="xlru08" type="number" required class="form-control" value="5" min="1" max="240" step="1" maxlength="3" name="report"> 
+    <br>
+  </div>       
+</template>
+
+<template>
+  <button class="btn btn-secondary btn-lg btn-block" type="button" data-toggle="collapse" data-target="#analog" aria-expanded="true" aria-controls="analog">
+  Analog
+  </button> 
+  <div id="analog" class="collapse" data-parent="#channels-form">    
+    <br>
+    <label for="low-set">Low Set:</label>
+    <input id="xanf32" type="number" required class="form-control" value="0" step="any" name="low-set">
+    <label for="low-clear">Low Clear:</label>
+    <input id="xanf32" type="number" required class="form-control" value="0" step="any" name="low-clear"> 
+    <label for="high-set">High Set:</label>
+    <input id="xanf32" type="number" required class="form-control" value="0" step="any" name="high-set">
+    <label for="high-clear">High Clear:</label>
+    <input id="xanf32" type="number" required class="form-control" value="0" step="any" name="high-clear">
+    <br>   
+  </div>
+</template>
+
+<template>
+  <div id="at-modem"> 
+    <br>    
+    <label for="at-command">Command:</label>
+    <input id="at-command" type="text" required class="form-control" name="at-command"> 
+    <label for="at-response">Response:</label> 
+    <textarea id="at-response" class="form-control" rows="10" name="at-response"></textarea>    
+    <br>
+  </div>       
+</template>
