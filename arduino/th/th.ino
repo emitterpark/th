@@ -205,7 +205,7 @@ void readAnalog() {
 }
 void readBattery() {  
   pinMode(BAT_EN_PIN, OUTPUT);
-  digitalWrite(BAT_EN_PIN, LOW);
+  digitalWrite(BAT_EN_PIN, HIGH);
   delay(batEnDly);
   uint16_t samples[batSampNum];
   for (uint8_t ii = 0; ii < batSampNum; ii++) {
