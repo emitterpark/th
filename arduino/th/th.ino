@@ -41,6 +41,7 @@ Conf conf;
 bool isLoraJoin, isUsb, isCpuSleepEn;
 volatile bool isAlarm = false;
 uint8_t reportTmr;
+unsigned long fetchTmrLog, fetchTmr = 10000L;
 String strUsbSerial, strLoraSerial;
 float BatVolt;
 const uint8_t batEnDly = 1, batSampDly = 1, batSampNum = 3;
@@ -59,21 +60,26 @@ void setup() {
   loadConf(); 
   setUsbSerial();   
   setAnalog();
-  setLoraSerial();   
+  setLoraSerial();
+  fetchTmrLog = millis();   
 }
 void loop() {
   readLoraSerial();
   if (isUsb) {
     readUsbSerial();
-    readAnalog();
-    for (uint8_t ch = 0; ch < numAn; ch++) {
-      fetch(ch);       
-    }  
-    delay(1000);
-  }
-  if (isCpuSleepEn) {
+    if (millis() - fetchTmrLog >= fetchTmr) {
+      fetchTmrLog = millis();
+      readAnalog();
+      for (uint8_t ch = 0; ch < numAn; ch++) {
+        fetch(ch);       
+      }  
+    }    
+  } else if (isCpuSleepEn) {
     sleepCpu();  
-  }
+  }  
+  //if (isCpuSleepEn) {
+  //  sleepCpu();  
+  //}
   //wdt_reset();  
 }
 void report() {
@@ -83,7 +89,7 @@ void report() {
     usbSerial.flush();  
   }  
   readBattery();
-  readAnalog();    
+  readAnalog(); 
   lpp.reset();  
   lpp.addTemperature(1, an[0]);
   lpp.addRelativeHumidity(2, an[1]);
@@ -138,9 +144,9 @@ void readLoraSerial() {
         sleepLora();      
       } else if (strLoraSerial.endsWith(F("Go to Sleep"))) {
         digitalWrite(LED_PIN, HIGH);
-        if (!isUsb) {
+        //if (!isUsb) {
           isCpuSleepEn = true;
-        }                 
+        //}                 
       } else if (strLoraSerial.endsWith(F("Wake up."))) {
         digitalWrite(LED_PIN, LOW);
         report();   
@@ -319,7 +325,9 @@ void setUsbSerial() {
     usbSerial.flush();
     isUsb = true;
   } else {
-    pwrDownUsb();  
+    pwrDownUsb();
+    pwrDownAdc();
+    pwrDownRef(); 
   }      
 }
 void pwrDownUsb() {
