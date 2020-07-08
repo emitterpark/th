@@ -77,9 +77,6 @@ void loop() {
   } else if (isCpuSleepEn) {
     sleepCpu();  
   }  
-  //if (isCpuSleepEn) {
-  //  sleepCpu();  
-  //}
   //wdt_reset();  
 }
 void report() {
@@ -100,14 +97,16 @@ void report() {
 }
 void sleepCpu() {
   for (uint8_t slpCnt = 0; slpCnt < 8 ; slpCnt++) {       
-    setAlr(); 
+    //setAlr(); 
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+    /*
     if (isAlarm) {
       isAlarm = false;      
       if (isLoraJoin) {          
         wakeLora();    
       }             
-    }              
+    }
+    */              
   }    
   reportTmr++;  
   if (reportTmr >= conf.lru08[lru08_report]) {
@@ -143,10 +142,8 @@ void readLoraSerial() {
         isLoraJoin = false;
         sleepLora();      
       } else if (strLoraSerial.endsWith(F("Go to Sleep"))) {
-        digitalWrite(LED_PIN, HIGH);
-        //if (!isUsb) {
-          isCpuSleepEn = true;
-        //}                 
+        digitalWrite(LED_PIN, HIGH);        
+          isCpuSleepEn = true;                         
       } else if (strLoraSerial.endsWith(F("Wake up."))) {
         digitalWrite(LED_PIN, LOW);
         report();   
@@ -303,7 +300,10 @@ void setLoraSerial() {
   }
   loraSerial.begin(115200);    
   delay(100);
-  digitalWrite(LORA_RES_PIN, HIGH);  
+  
+  //digitalWrite(LORA_RES_PIN, HIGH);  
+  pinMode(LORA_RES_PIN, INPUT);
+  
   delay(1000);
   wakeLora();      
 }
