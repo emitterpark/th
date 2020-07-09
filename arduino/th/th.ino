@@ -64,6 +64,10 @@ void setup() {
   fetchTmrLog = millis();   
 }
 void loop() {
+
+  //digitalWrite(LED_PIN, HIGH);
+  //isCpuSleepEn = true;
+  
   readLoraSerial();
   if (isUsb) {
     readUsbSerial();
@@ -299,11 +303,8 @@ void setLoraSerial() {
     //wdt_reset();
   }
   loraSerial.begin(115200);    
-  delay(100);
-  
-  //digitalWrite(LORA_RES_PIN, HIGH);  
-  pinMode(LORA_RES_PIN, INPUT);
-  
+  delay(100);  
+  pinMode(LORA_RES_PIN, INPUT);  
   delay(1000);
   wakeLora();      
 }
