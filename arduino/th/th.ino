@@ -53,8 +53,7 @@ WebUSB WebUSBSerial(1 /* https:// */, "127.0.0.1:5500");
 #define usbSerial WebUSBSerial
 #define loraSerial Serial1
 
-void setup() {
-  //wdt_enable(WDTO_8S); 
+void setup() {  
   analogReference(INTERNAL); 
   setPin();
   loadConf(); 
@@ -64,10 +63,6 @@ void setup() {
   fetchTmrLog = millis();   
 }
 void loop() {
-
-  //digitalWrite(LED_PIN, HIGH);
-  //isCpuSleepEn = true;
-  
   readLoraSerial();
   if (isUsb) {
     readUsbSerial();
@@ -80,11 +75,9 @@ void loop() {
     }    
   } else if (isCpuSleepEn) {
     sleepCpu();  
-  }  
-  //wdt_reset();  
+  }    
 }
-void report() {
-  //wdt_reset();    
+void report() {      
   if (isUsb) {
     usbSerial.println("alarm");
     usbSerial.flush();  
@@ -122,8 +115,7 @@ void sleepCpu() {
   }   
 }
 void readLoraSerial() { 
-  while (loraSerial.available()) {
-    //wdt_reset();
+  while (loraSerial.available()) {    
     const char chr = (char)loraSerial.read();    
     strLoraSerial += chr;
     if (chr == '\n') {
@@ -147,7 +139,7 @@ void readLoraSerial() {
         sleepLora();      
       } else if (strLoraSerial.endsWith(F("Go to Sleep"))) {
         digitalWrite(LED_PIN, HIGH);        
-          isCpuSleepEn = true;                         
+        isCpuSleepEn = true;                         
       } else if (strLoraSerial.endsWith(F("Wake up."))) {
         digitalWrite(LED_PIN, LOW);
         report();   
@@ -163,8 +155,7 @@ void readLoraSerial() {
   }
 }
 void readUsbSerial() {
-  while (usbSerial && usbSerial.available()) {
-    //wdt_reset();
+  while (usbSerial && usbSerial.available()) {    
     const char chr = (char)usbSerial.read();
     strUsbSerial += chr;
     if (chr == '\n') {
@@ -299,8 +290,7 @@ ISR (PCINT0_vect) {
   isAlarm = digitalRead(AN_ALR_PIN);
 }
 void setLoraSerial() {
-  while (!loraSerial) {
-    //wdt_reset();
+  while (!loraSerial) {    
   }
   loraSerial.begin(115200);    
   delay(100);  
@@ -319,8 +309,7 @@ void sleepLora() {
 }
 void setUsbSerial() {
   if (USBSTA >> VBUS & 1) {          
-    while (!usbSerial) {
-      //wdt_reset();
+    while (!usbSerial) {      
     }
     usbSerial.begin(9600);  
     usbSerial.flush();
