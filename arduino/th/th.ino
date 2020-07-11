@@ -40,7 +40,6 @@ Conf conf;
 
 bool isLoraJoin, isUsb, isCpuSleepEn;
 volatile bool isAlarm = false;
-uint8_t reportTmr;
 unsigned long fetchTmrLog, fetchTmr = 10000L, sleepTmrLog, sleepTmr = 60000L;
 String strUsbSerial, strLoraSerial;
 float BatVolt;
@@ -95,35 +94,22 @@ void report() {
   loraSerial.print("at+send=lora:" + String(conf.lru08[lru08_port]) + ':'); 
   loraSerial.println(lppGetBuffer());       
 }
-void sleepCpu() {
-  for (uint8_t slpCnt = 0; slpCnt < 8 ; slpCnt++) {       
+void sleepCpu() {  
+  for (uint16_t slpCnt = 0; slpCnt < conf.lru08[lru08_report] * 60 / 8 ; slpCnt++) {      
     setAlr(); 
-    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
-    
+    LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);    
     if (isAlarm) {
-      isAlarm = false; 
-      /*  
-      digitalWrite(LED_PIN, LOW);
-      delay(500);
-      digitalWrite(LED_PIN, HIGH);
-      delay(1000);
-      */  
+      isAlarm = false;      
       if (isLoraJoin) {          
         wakeLora(); 
         return;   
       }             
-    }
-                  
+    }                  
+  }  
+  if (!isLoraJoin) {          
+    resetCpu();    
   }    
-  reportTmr++;  
-  if (reportTmr >= conf.lru08[lru08_report]) {
-    reportTmr = 0;
-    if (!isLoraJoin) {          
-      resetCpu();    
-    }    
-    wakeLora();
-    return;    
-  }   
+  wakeLora();  
 }
 void readLoraSerial() { 
   while (loraSerial.available()) {    
@@ -208,7 +194,7 @@ void readAnalog() {
   SHT31D result = analog.periodicFetchData();
   an[0] = result.t;
   an[1] = result.rh;
-  analog.clearAll(); ////////////???????????
+  analog.clearAll(); 
   delay(10);
   isAlarm = false;
 }
@@ -335,9 +321,9 @@ void setUsbSerial() {
 }
 void pwrDownUsb() {
   USBDevice.detach();
-  USBCON |= _BV(FRZCLK);  //freeze USB clock
-  PLLCSR &= ~_BV(PLLE);   // turn off USB PLL
-  USBCON &= ~_BV(USBE);   // disable USB
+  USBCON |= _BV(FRZCLK);  
+  PLLCSR &= ~_BV(PLLE);   
+  USBCON &= ~_BV(USBE);   
   USBCON &= ~_BV(OTGPADE);
   USBCON &= ~_BV(VBUSTE);
   UHWCON &= ~_BV(UVREGE);
