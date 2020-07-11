@@ -41,7 +41,7 @@ Conf conf;
 bool isLoraJoin, isUsb, isCpuSleepEn;
 volatile bool isAlarm = false;
 uint8_t reportTmr;
-unsigned long fetchTmrLog, fetchTmr = 10000L;
+unsigned long fetchTmrLog, fetchTmr = 10000L, sleepTmrLog, sleepTmr = 60000L;
 String strUsbSerial, strLoraSerial;
 float BatVolt;
 const uint8_t batEnDly = 1, batSampDly = 1, batSampNum = 3;
@@ -60,7 +60,8 @@ void setup() {
   setUsbSerial();   
   setAnalog();
   setLoraSerial();
-  fetchTmrLog = millis();   
+  fetchTmrLog = millis();
+  sleepTmrLog = millis();   
 }
 void loop() {
   readLoraSerial();
@@ -75,7 +76,9 @@ void loop() {
     }    
   } else if (isCpuSleepEn) {
     sleepCpu();  
-  }    
+  } else if (millis() - sleepTmrLog >= sleepTmr) {
+    sleepLora();  
+  }
 }
 void report() {      
   if (isUsb) {
@@ -94,16 +97,23 @@ void report() {
 }
 void sleepCpu() {
   for (uint8_t slpCnt = 0; slpCnt < 8 ; slpCnt++) {       
-    //setAlr(); 
+    setAlr(); 
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
-    /*
+    
     if (isAlarm) {
-      isAlarm = false;      
+      isAlarm = false; 
+      /*  
+      digitalWrite(LED_PIN, LOW);
+      delay(500);
+      digitalWrite(LED_PIN, HIGH);
+      delay(1000);
+      */  
       if (isLoraJoin) {          
-        wakeLora();    
+        wakeLora(); 
+        return;   
       }             
     }
-    */              
+                  
   }    
   reportTmr++;  
   if (reportTmr >= conf.lru08[lru08_report]) {
@@ -111,7 +121,8 @@ void sleepCpu() {
     if (!isLoraJoin) {          
       resetCpu();    
     }    
-    wakeLora();    
+    wakeLora();
+    return;    
   }   
 }
 void readLoraSerial() { 
@@ -287,7 +298,7 @@ void setAlr(){
   isAlarm = false;
 }
 ISR (PCINT0_vect) {    
-  isAlarm = digitalRead(AN_ALR_PIN);
+  isAlarm = digitalRead(AN_ALR_PIN);  
 }
 void setLoraSerial() {
   while (!loraSerial) {    
@@ -300,12 +311,14 @@ void setLoraSerial() {
 }
 void wakeLora() {
   isCpuSleepEn = false;
+  sleepTmrLog = millis();
   delay(10);
   loraSerial.println("at+version");
 }
 void sleepLora() {
-    delay(10);
-    loraSerial.print(F("at+set_config=device:sleep:1"));    
+  sleepTmrLog = millis();
+  delay(10);
+  loraSerial.print(F("at+set_config=device:sleep:1"));    
 }
 void setUsbSerial() {
   if (USBSTA >> VBUS & 1) {          
@@ -337,12 +350,12 @@ void pwrDownRef() {
   ACSR |= _BV(ACD);
 }
 void resetCpu() {
-  //wdt_enable(WDTO_15MS);
-  //while(true);
-  if (isUsb) {
-    usbSerial.println("reset");
-    usbSerial.flush(); 
-  }  
+  wdt_enable(WDTO_15MS);
+  while(true);
+  //if (isUsb) {
+  //  usbSerial.println("reset");
+  //  usbSerial.flush(); 
+  //}  
 }
 String lppGetBuffer() {
   String str;
