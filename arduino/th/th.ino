@@ -192,9 +192,7 @@ void readUsbSerial() {
 void readAnalog() {
   SHT31D result = analog.periodicFetchData();
   an[0] = result.t;
-  an[1] = result.rh;
-  analog.clearAll(); 
-  delay(10);
+  an[1] = result.rh;  
   isAlarm = false;
 }
 void readBattery() {  
@@ -274,7 +272,9 @@ void setAnalog() {
   const uint8_t _r_high_clear = anf32_high_clear + 1 * (sizeof(conf.anf32) / sizeof(conf.anf32[0])) / numAn;  
   analog.writeAlertHigh(conf.anf32[_t_high_set], conf.anf32[_t_high_clear], conf.anf32[_r_high_set], conf.anf32[_r_high_clear]);
   analog.writeAlertLow(conf.anf32[_t_low_clear], conf.anf32[_t_low_set], conf.anf32[_r_low_clear], conf.anf32[_r_low_set]);
-  readAnalog();      
+  readAnalog();
+  analog.clearAll(); 
+  delay(10);      
 }
 void setAlr(){
   *digitalPinToPCMSK(AN_ALR_PIN) |= bit (digitalPinToPCMSKbit(AN_ALR_PIN));
@@ -283,7 +283,8 @@ void setAlr(){
   isAlarm = false;
 }
 ISR (PCINT0_vect) {    
-  isAlarm = digitalRead(AN_ALR_PIN);  
+  //isAlarm = digitalRead(AN_ALR_PIN);
+  isAlarm = true;  
 }
 void setLoraSerial() {
   while (!loraSerial) {    
