@@ -94,7 +94,8 @@ void report() {
   loraSerial.print("at+send=lora:" + String(conf.lru08[lru08_port]) + ':'); 
   loraSerial.println(lppGetBuffer());       
 }
-void sleepCpu() {  
+void sleepCpu() {
+  digitalWrite(LED_PIN, HIGH);  
   for (uint16_t slpCnt = 0; slpCnt < conf.lru08[lru08_report] * 60 / 8 ; slpCnt++) {      
     setAlr(); 
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);    
@@ -134,11 +135,9 @@ void readLoraSerial() {
       } else if (strLoraSerial.indexOf(F("NO_NETWORK")) >= 0) {
         isLoraJoin = false;
         sleepLora();      
-      } else if (strLoraSerial.endsWith(F("Go to Sleep"))) {
-        digitalWrite(LED_PIN, HIGH);        
+      } else if (strLoraSerial.endsWith(F("Go to Sleep"))) {                
         isCpuSleepEn = true;                         
       } else if (strLoraSerial.endsWith(F("Wake up."))) {
-        digitalWrite(LED_PIN, LOW);
         report();   
       } else if (strLoraSerial.startsWith(F("ERROR"))) {        
         sleepLora();     
@@ -296,6 +295,7 @@ void setLoraSerial() {
   wakeLora();      
 }
 void wakeLora() {
+  digitalWrite(LED_PIN, LOW);
   isCpuSleepEn = false;
   sleepTmrLog = millis();
   delay(10);
