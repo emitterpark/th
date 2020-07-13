@@ -81,7 +81,7 @@ void loop() {
 }
 void report() {      
   if (isUsb) {
-    usbSerial.println("alarm");
+    usbSerial.println("report");
     usbSerial.flush();  
   }  
   readBattery();
@@ -282,8 +282,7 @@ void setAlr(){
   PCICR  |= bit (digitalPinToPCICRbit(AN_ALR_PIN));
   isAlarm = false;
 }
-ISR (PCINT0_vect) {    
-  //isAlarm = digitalRead(AN_ALR_PIN);
+ISR (PCINT0_vect) {  
   isAlarm = true;  
 }
 void setLoraSerial() {
@@ -338,11 +337,7 @@ void pwrDownRef() {
 }
 void resetCpu() {
   wdt_enable(WDTO_15MS);
-  while(true);
-  //if (isUsb) {
-  //  usbSerial.println("reset");
-  //  usbSerial.flush(); 
-  //}  
+  while(true);  
 }
 String lppGetBuffer() {
   String str;
