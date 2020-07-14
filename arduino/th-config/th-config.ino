@@ -3,7 +3,7 @@
 const uint8_t numAn                     = 2;
 
 struct Conf {
-  const uint8_t   lru08[3]              = {2,90,2};  
+  const uint8_t   lru08[3]              = {2,90,1};  
   const float     anf32[4 * numAn]      = {20,22,40,38,10,15,90,85};  
 };
 

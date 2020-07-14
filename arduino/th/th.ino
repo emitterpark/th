@@ -13,6 +13,7 @@
 #include "ClosedCube_SHT31D.h"    // https://github.com/closedcube/ClosedCube_SHT31D_Arduino
 #include <WebUSB.h>               // https://github.com/webusb/arduino
 
+const uint8_t TXD1_PIN            = 1;                // PD3/TXD1/INT3
 const uint8_t AN_ALR_PIN          = 8;                // PB4/ADC11/PCINT4
 const uint8_t AN_RES_PIN          = 9;                // PB5/ADC12/PCINT5
 const uint8_t LORA_RES_PIN        = 10;               // PB6/ADC13/PCINT6
@@ -97,11 +98,13 @@ void report() {
 void sleepCpu() {
   digitalWrite(LED_PIN, HIGH);  
   for (uint16_t slpCnt = 0; slpCnt < conf.lru08[lru08_report] * 60 / 8 ; slpCnt++) {      
-    setAlr(); 
+    setAlr();
+    endLoraSerial();    
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);    
     if (isAlarm) {
       isAlarm = false;      
-      if (isLoraJoin) {          
+      if (isLoraJoin) {
+        beginLoraSerial();                
         wakeLora(); 
         return;   
       }             
@@ -109,7 +112,8 @@ void sleepCpu() {
   }  
   if (!isLoraJoin) {          
     resetCpu();    
-  }    
+  }
+  beginLoraSerial();          
   wakeLora();  
 }
 void readLoraSerial() { 
@@ -285,14 +289,21 @@ void setAlr(){
 ISR (PCINT0_vect) {  
   isAlarm = true;  
 }
-void setLoraSerial() {
-  while (!loraSerial) {    
-  }
-  loraSerial.begin(115200);    
-  delay(100);  
+void setLoraSerial() {  
+  beginLoraSerial();  
   pinMode(LORA_RES_PIN, INPUT);  
   delay(1000);
   wakeLora();      
+}
+void beginLoraSerial() {
+  loraSerial.begin(115200);
+  //UCSR1B |= _BV(TXEN1);   //enable TX
+  delay(10);  
+}
+void endLoraSerial() {
+  loraSerial.end();
+  //UCSR1B &= ~_BV(TXEN1);  //disable TX 
+  digitalWrite(TXD1_PIN, LOW);
 }
 void wakeLora() {
   digitalWrite(LED_PIN, LOW);
