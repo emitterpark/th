@@ -1,5 +1,4 @@
-![](./media/image1.jpeg){width="1.7645833333333334in"
-height="2.352777777777778in"}
+![](./media/image1.jpeg)
 
 **LoRaWAN Outdoor Temperature & Humidity Sensor**
 
