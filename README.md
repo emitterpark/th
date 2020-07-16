@@ -1,5 +1,3 @@
-![](./media/image1.jpeg)
-
 **LoRaWAN Outdoor Temperature & Humidity Sensor**
 
 **SENSOR**
