@@ -43,7 +43,8 @@ bool isLoraJoin, isUsb, isCpuSleepEn;
 volatile bool isAlarm = false;
 unsigned long fetchTmrLog, fetchTmr = 10000L, sleepTmrLog, sleepTmr = 60000L;
 String strUsbSerial, strLoraSerial;
-float BatVolt;
+float batVolt;
+const float batCalb = 1.025;
 const uint8_t batEnDly = 1, batSampDly = 1, batSampNum = 3;
 
 CayenneLPP lpp(51);
@@ -90,14 +91,14 @@ void report() {
   lpp.reset();  
   lpp.addTemperature(1, an[0]);
   lpp.addRelativeHumidity(2, an[1]);
-  lpp.addAnalogInput(3, BatVolt);
+  lpp.addAnalogInput(3, batVolt);
   delay(10); 
   loraSerial.print("at+send=lora:" + String(conf.lru08[lru08_port]) + ':'); 
   loraSerial.println(lppGetBuffer());       
 }
 void sleepCpu() {
   digitalWrite(LED_PIN, HIGH);  
-  for (uint16_t slpCnt = 0; slpCnt < conf.lru08[lru08_report] * 60 / 8 ; slpCnt++) {      
+  for (uint16_t slpCnt = 0; slpCnt < conf.lru08[lru08_report] * (60 / 8 - 1) ; slpCnt++) {      
     setAlr();
     endLoraSerial();    
     LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);    
@@ -211,12 +212,12 @@ void readBattery() {
   pinMode(BAT_EN_PIN, INPUT);
   pwrDownAdc();
   pwrDownRef(); 
-  BatVolt = 0;
+  batVolt = 0;
   for (uint8_t jj = 0; jj < batSampNum; jj++) {
-    BatVolt += samples[jj];
+    batVolt += samples[jj];
   }
-  BatVolt /= batSampNum;   
-  BatVolt = ( BatVolt / 1023 ) * 2.56 * 2;  
+  batVolt /= batSampNum;   
+  batVolt = ( batVolt / 1023 ) * 2.56 * 2 * batCalb;  
 }
 void getLorawan() {
   String str; 
