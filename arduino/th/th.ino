@@ -235,7 +235,7 @@ void getChannels() {
     usbSerial.print(F("xanf32"));    
     str = '0' + String(i);
     usbSerial.print(str.substring(str.length() - 2));    
-    usbSerial.println(conf.anf32[i]); 
+    usbSerial.println(conf.anf32[i], 2); 
     usbSerial.flush();   
   }  
 }
@@ -244,7 +244,7 @@ void fetch(const uint8_t ch) {
   usbSerial.print(F("xanval"));    
   str = '0' + String(ch);
   usbSerial.print(str.substring(str.length() - 2));    
-  usbSerial.println(an[ch]);
+  usbSerial.println(an[ch], 2);
   usbSerial.flush();    
 }
 void loadConf() {
