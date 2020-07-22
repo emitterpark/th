@@ -95,8 +95,8 @@
 <package name="211P-C-HOLDER">
 <description>&lt;b&gt;825433-5&lt;/b&gt;&lt;br&gt;
 </description>
-<pad name="1" x="-27.051" y="0" drill="1.1"/>
-<pad name="2" x="27.051" y="0" drill="1.1"/>
+<pad name="1" x="-27.051" y="0" drill="1.1" diameter="2.1844"/>
+<pad name="2" x="27.051" y="0" drill="1.1" diameter="2.1844"/>
 <text x="1.82" y="7.89" size="0.8128" layer="25" align="center">&gt;NAME</text>
 <wire x1="-29" y1="14.5" x2="29" y2="14.5" width="0.1" layer="51"/>
 <wire x1="29" y1="14.5" x2="29" y2="-14.5" width="0.1" layer="51"/>
@@ -365,17 +365,17 @@
 <package name="REED-DIP">
 <description>&lt;b&gt;825433-5&lt;/b&gt;&lt;br&gt;
 </description>
-<pad name="P$1" x="-7.62" y="0" drill="1.1"/>
-<pad name="P$2" x="7.62" y="0" drill="1.1"/>
+<pad name="P$1" x="-8.89" y="0" drill="1.1"/>
+<pad name="P$2" x="8.89" y="0" drill="1.1"/>
 <text x="-2.4685" y="-0.07" size="0.8128" layer="25">&gt;NAME</text>
 <wire x1="-5.08" y1="1.016" x2="5.08" y2="1.016" width="0.0762" layer="51"/>
 <wire x1="5.08" y1="1.016" x2="5.08" y2="-1.016" width="0.0762" layer="51"/>
 <wire x1="5.08" y1="-1.016" x2="-5.08" y2="-1.016" width="0.0762" layer="51"/>
 <wire x1="-5.08" y1="-1.016" x2="-5.08" y2="1.016" width="0.0762" layer="51"/>
-<wire x1="-8.636" y1="1.27" x2="8.636" y2="1.27" width="0.127" layer="21"/>
-<wire x1="8.636" y1="1.27" x2="8.636" y2="-1.27" width="0.127" layer="21"/>
-<wire x1="8.636" y1="-1.27" x2="-8.636" y2="-1.27" width="0.127" layer="21"/>
-<wire x1="-8.636" y1="-1.27" x2="-8.636" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-9.906" y1="1.27" x2="9.906" y2="1.27" width="0.127" layer="21"/>
+<wire x1="9.906" y1="1.27" x2="9.906" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="9.906" y1="-1.27" x2="-9.906" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="-9.906" y1="-1.27" x2="-9.906" y2="1.27" width="0.127" layer="21"/>
 </package>
 <package name="HEADER-6P-DIP-2_54MM">
 <description>&lt;b&gt;825433-5&lt;/b&gt;&lt;br&gt;
@@ -410,18 +410,6 @@
 <wire x1="3.1115" y1="2.2225" x2="3.1115" y2="-2.2225" width="0.127" layer="21"/>
 <wire x1="3.1115" y1="-2.2225" x2="-3.1115" y2="-2.2225" width="0.127" layer="21"/>
 <wire x1="-3.1115" y1="-2.2225" x2="-3.1115" y2="2.2225" width="0.127" layer="21"/>
-</package>
-<package name="CAPACITOR-8-3.5">
-<description>&lt;b&gt;825433-5&lt;/b&gt;&lt;br&gt;
-</description>
-<pad name="P$1" x="-1.75" y="0" drill="1.1"/>
-<pad name="P$2" x="1.75" y="0" drill="1.1"/>
-<text x="-2.4685" y="-0.07" size="0.8128" layer="25">&gt;NAME</text>
-<circle x="0" y="0" radius="3.937" width="0.127" layer="21"/>
-<circle x="0" y="0" radius="3.937" width="0.0762" layer="51"/>
-<wire x1="-3.937" y1="1.016" x2="-4.318" y2="1.016" width="0.127" layer="21"/>
-<wire x1="-4.318" y1="1.016" x2="-4.318" y2="-1.016" width="0.127" layer="21"/>
-<wire x1="-4.318" y1="-1.016" x2="-3.937" y2="-1.016" width="0.127" layer="21"/>
 </package>
 <package name="HEADER-8P-2R-DIP-2_54MM">
 <description>&lt;b&gt;825433-5&lt;/b&gt;&lt;br&gt;
@@ -474,6 +462,18 @@
 <wire x1="8.1915" y1="-8.001" x2="-8.1915" y2="-8.001" width="0.127" layer="21"/>
 <wire x1="-8.1915" y1="-8.001" x2="-8.1915" y2="8.001" width="0.127" layer="21"/>
 <text x="-2.9845" y="0.5715" size="0.8128" layer="25">&gt;NAME</text>
+</package>
+<package name="CAPACITOR-10-5">
+<description>&lt;b&gt;825433-5&lt;/b&gt;&lt;br&gt;
+</description>
+<pad name="P$1" x="-2.54" y="0" drill="1.1"/>
+<pad name="P$2" x="2.54" y="0" drill="1.1"/>
+<text x="-2.4685" y="-0.07" size="0.8128" layer="25">&gt;NAME</text>
+<circle x="0" y="0" radius="5.08" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="5.08" width="0.0762" layer="51"/>
+<wire x1="-5.08" y1="1.27" x2="-6.35" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-6.35" y1="1.27" x2="-6.35" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="-6.35" y1="-1.27" x2="-5.08" y2="-1.27" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -773,19 +773,6 @@
 <wire x1="5.588" y1="-1.016" x2="5.588" y2="1.016" width="0.254" layer="94"/>
 <pin name="GND" x="6.35" y="-3.556" visible="off" length="short" direction="pwr" rot="R90"/>
 </symbol>
-<symbol name="CAPACITOR-POL">
-<wire x1="5.588" y1="2.032" x2="5.588" y2="-2.032" width="0.254" layer="94"/>
-<wire x1="7.112" y1="2.032" x2="7.112" y2="-2.032" width="0.254" layer="94"/>
-<wire x1="5.08" y1="0" x2="5.588" y2="0" width="0.254" layer="94"/>
-<wire x1="7.112" y1="0" x2="7.62" y2="0" width="0.254" layer="94"/>
-<text x="3.81" y="3.048" size="1.778" layer="95" align="center-left">&gt;NAME</text>
-<text x="3.81" y="4.826" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
-<pin name="1" x="0" y="0" visible="off" length="middle" direction="pas"/>
-<pin name="2" x="12.7" y="0" visible="off" length="middle" direction="pas" rot="R180"/>
-<wire x1="7.112" y1="2.032" x2="6.35" y2="2.032" width="0.254" layer="94"/>
-<wire x1="6.35" y1="2.032" x2="6.35" y2="-2.032" width="0.254" layer="94"/>
-<wire x1="6.35" y1="-2.032" x2="7.112" y2="-2.032" width="0.254" layer="94"/>
-</symbol>
 <symbol name="CONNECTOR-8P-2R">
 <wire x1="5.08" y1="2.54" x2="12.7" y2="2.54" width="0.254" layer="94"/>
 <wire x1="12.7" y1="-10.16" x2="12.7" y2="2.54" width="0.254" layer="94"/>
@@ -840,6 +827,19 @@
 <pin name="GND" x="-10.16" y="-12.7" length="middle" direction="pwr" rot="R90"/>
 <pin name="OUT" x="2.54" y="0" length="middle" direction="pwr" rot="R180"/>
 <wire x1="-17.78" y1="5.08" x2="-17.78" y2="-7.62" width="0.254" layer="94"/>
+</symbol>
+<symbol name="CAPACITOR-POL">
+<wire x1="5.588" y1="2.032" x2="5.588" y2="-2.032" width="0.254" layer="94"/>
+<wire x1="7.112" y1="2.032" x2="7.112" y2="-2.032" width="0.254" layer="94"/>
+<wire x1="5.08" y1="0" x2="5.588" y2="0" width="0.254" layer="94"/>
+<wire x1="7.112" y1="0" x2="7.62" y2="0" width="0.254" layer="94"/>
+<text x="3.81" y="3.048" size="1.778" layer="95" align="center-left">&gt;NAME</text>
+<text x="3.81" y="4.826" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
+<pin name="1" x="0" y="0" visible="off" length="middle" direction="pas"/>
+<pin name="2" x="12.7" y="0" visible="off" length="middle" direction="pas" rot="R180"/>
+<wire x1="7.112" y1="2.032" x2="6.35" y2="2.032" width="0.254" layer="94"/>
+<wire x1="6.35" y1="2.032" x2="6.35" y2="-2.032" width="0.254" layer="94"/>
+<wire x1="6.35" y1="-2.032" x2="7.112" y2="-2.032" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1209,22 +1209,6 @@
 </device>
 </devices>
 </deviceset>
-<deviceset name="CAPACITOR-8-3.5" prefix="C" uservalue="yes">
-<gates>
-<gate name="G$1" symbol="CAPACITOR-POL" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="CAPACITOR-8-3.5">
-<connects>
-<connect gate="G$1" pin="1" pad="P$1"/>
-<connect gate="G$1" pin="2" pad="P$2"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
 <deviceset name="HEADER-8P-2R-DIP-2_54MM" prefix="CON" uservalue="yes">
 <gates>
 <gate name="G$1" symbol="CONNECTOR-8P-2R" x="0" y="0"/>
@@ -1291,6 +1275,22 @@
 <connect gate="G$1" pin="GND" pad="1"/>
 <connect gate="G$1" pin="IN" pad="3"/>
 <connect gate="G$1" pin="OUT" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="CAPACITOR-10-5" prefix="C" uservalue="yes">
+<gates>
+<gate name="G$1" symbol="CAPACITOR-POL" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="CAPACITOR-10-5">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1404,8 +1404,6 @@
 <part name="SUP4" library="myparts" deviceset="VCC" device=""/>
 <part name="SUP7" library="myparts" deviceset="VCC" device=""/>
 <part name="SUP9" library="myparts" deviceset="VCC" device=""/>
-<part name="C16" library="myparts" deviceset="CAPACITOR-8-3.5" device=""/>
-<part name="C17" library="myparts" deviceset="CAPACITOR-8-3.5" device=""/>
 <part name="GND31" library="myparts" deviceset="GND" device=""/>
 <part name="GND13" library="myparts" deviceset="GND" device=""/>
 <part name="CON2" library="myparts" deviceset="HEADER-8P-2R-DIP-2_54MM" device=""/>
@@ -1426,6 +1424,7 @@
 <part name="C15" library="myparts" deviceset="CAPACITOR-0603" device=""/>
 <part name="GND14" library="myparts" deviceset="GND" device=""/>
 <part name="GND29" library="myparts" deviceset="GND" device=""/>
+<part name="C16" library="myparts" deviceset="CAPACITOR-10-5" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1758,16 +1757,8 @@
 <instance part="SUP9" gate="G$1" x="-86.36" y="-12.7" smashed="yes">
 <attribute name="VALUE" x="-88.265" y="-10.795" size="1.778" layer="96"/>
 </instance>
-<instance part="C16" gate="G$1" x="180.34" y="2.54" smashed="yes" rot="R90">
-<attribute name="NAME" x="179.324" y="2.794" size="1.778" layer="95" rot="R90" align="center-left"/>
-<attribute name="VALUE" x="175.514" y="6.35" size="1.778" layer="96" rot="R90" align="center-left"/>
-</instance>
-<instance part="C17" gate="G$1" x="180.34" y="15.24" smashed="yes" rot="R90">
-<attribute name="NAME" x="179.324" y="15.494" size="1.778" layer="95" rot="R90" align="center-left"/>
-<attribute name="VALUE" x="175.514" y="19.05" size="1.778" layer="96" rot="R90" align="center-left"/>
-</instance>
-<instance part="GND31" gate="1" x="180.34" y="0" smashed="yes">
-<attribute name="VALUE" x="177.8" y="-3.048" size="1.778" layer="96"/>
+<instance part="GND31" gate="1" x="180.34" y="12.7" smashed="yes">
+<attribute name="VALUE" x="177.8" y="9.652" size="1.778" layer="96"/>
 </instance>
 <instance part="GND13" gate="1" x="-48.26" y="-63.5" smashed="yes">
 <attribute name="VALUE" x="-50.8" y="-66.548" size="1.778" layer="96"/>
@@ -1833,6 +1824,10 @@
 </instance>
 <instance part="GND29" gate="1" x="175.26" y="12.7" smashed="yes">
 <attribute name="VALUE" x="172.72" y="9.652" size="1.778" layer="96"/>
+</instance>
+<instance part="C16" gate="G$1" x="180.34" y="15.24" smashed="yes" rot="R90">
+<attribute name="NAME" x="177.292" y="19.05" size="1.778" layer="95" rot="R90" align="center-left"/>
+<attribute name="VALUE" x="175.514" y="19.05" size="1.778" layer="96" rot="R90" align="center-left"/>
 </instance>
 </instances>
 <busses>
@@ -1969,10 +1964,6 @@
 <pinref part="GND28" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="C16" gate="G$1" pin="1"/>
-<pinref part="GND31" gate="1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="SW2" gate="G$1" pin="2"/>
 <pinref part="GND13" gate="1" pin="GND"/>
 </segment>
@@ -2020,6 +2011,10 @@
 <segment>
 <pinref part="C15" gate="G$1" pin="1"/>
 <pinref part="GND29" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="C16" gate="G$1" pin="1"/>
+<pinref part="GND31" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="N$2" class="0">
@@ -2288,12 +2283,6 @@
 <pinref part="J1" gate="G$1" pin="3"/>
 </segment>
 </net>
-<net name="N$21" class="0">
-<segment>
-<pinref part="C16" gate="G$1" pin="2"/>
-<pinref part="C17" gate="G$1" pin="1"/>
-</segment>
-</net>
 <net name="N$15" class="0">
 <segment>
 <pinref part="C9" gate="G$1" pin="2"/>
@@ -2334,12 +2323,10 @@
 <wire x1="76.2" y1="2.54" x2="91.44" y2="2.54" width="0.1524" layer="91"/>
 <junction x="91.44" y="2.54"/>
 <wire x1="185.42" y1="-10.16" x2="185.42" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="C17" gate="G$1" pin="2"/>
 <wire x1="165.1" y1="27.94" x2="170.18" y2="27.94" width="0.1524" layer="91"/>
 <pinref part="C13" gate="G$1" pin="2"/>
 <junction x="165.1" y="27.94"/>
 <wire x1="170.18" y1="27.94" x2="175.26" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="175.26" y1="27.94" x2="180.34" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="27.94" x2="165.1" y2="27.94" width="0.1524" layer="91"/>
 <pinref part="C12" gate="G$1" pin="2"/>
 <junction x="160.02" y="27.94"/>
@@ -2354,6 +2341,8 @@
 <pinref part="C15" gate="G$1" pin="2"/>
 <junction x="175.26" y="27.94"/>
 <wire x1="185.42" y1="27.94" x2="180.34" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="C16" gate="G$1" pin="2"/>
+<wire x1="180.34" y1="27.94" x2="175.26" y2="27.94" width="0.1524" layer="91"/>
 <junction x="180.34" y="27.94"/>
 </segment>
 </net>
