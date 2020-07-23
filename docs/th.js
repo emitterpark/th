@@ -81,9 +81,14 @@
             lorawanBuf.push('at+set_config=lora:' + items[i].id + ':' + items[i].value + '\r\n');            
           }                                 
         }
+        view = encoder.encode(str);      
+        port.send(view);
+        lorawanBuf.push('xsave\r\n');
+        /*
         str += 'xsave\r\n';
         view = encoder.encode(str);      
         port.send(view);
+        */
       } 
     });
 
@@ -244,6 +249,7 @@
         port.onReceiveError = error => {
           //console.error(error);
         };
+        /*
         const encoder = new TextEncoder();
         let view;
         view = encoder.encode('xdevice\r\n');      
@@ -257,7 +263,8 @@
         view = encoder.encode('xlorawan\r\n');      
         port.send(view);
         view = encoder.encode('at+get_config=lora:status\r\n');      
-        port.send(view);        
+        port.send(view);
+        */        
       }, error => {
          deviceDisp.textContent = error;
          versionDisp.textContent = '';
