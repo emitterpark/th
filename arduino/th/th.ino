@@ -61,9 +61,9 @@ void setup() {
   setUsbSerial();   
   setAnalog();
   setLoraSerial();
-  printConf();
+  printAll();
   fetchTmrLog = millis();
-  sleepTmrLog = millis();   
+  sleepTmrLog = millis();  
 }
 void loop() {
   readLoraSerial();
@@ -72,9 +72,7 @@ void loop() {
     if (millis() - fetchTmrLog >= fetchTmr) {
       fetchTmrLog = millis();
       readAnalog();
-      for (uint8_t ch = 0; ch < numAn; ch++) {
-        fetch(ch);       
-      }  
+      printChFetch();  
     }    
   } else if (isCpuSleepEn) {
     sleepCpu();  
@@ -83,10 +81,7 @@ void loop() {
   }
 }
 void report() {      
-  if (isUsb) {
-    usbSerial.println("report");
-    usbSerial.flush();  
-  }  
+  printMsg(F("report"));
   readBattery();
   readAnalog(); 
   lpp.reset();  
@@ -129,18 +124,22 @@ void readLoraSerial() {
         loraSerial.print(F("at+set_config=lora:dr:")); 
         loraSerial.println(conf.lru08[lru08_dr]); 
       } else if (strLoraSerial.endsWith(F("JOIN_FAIL 99"))) {
-        isLoraJoin = false;         
+        isLoraJoin = false;
+        printMsg(F("xjoinloraCould not Join to Network"));                 
         sleepLora(); 
       } else if (strLoraSerial.indexOf(F("Join retry")) >= 0) {
-        isLoraJoin = false;         
-      } else if (strLoraSerial.indexOf(F("configure DR")) >= 0) {
-        isLoraJoin = true;
-        sleepLora();            
-      } else if (strLoraSerial.endsWith(F("send success"))) {
-        sleepLora(); 
+        isLoraJoin = false;
+        printMsg(F("xjoinloraJoining to Network .."));         
       } else if (strLoraSerial.indexOf(F("NO_NETWORK")) >= 0) {
         isLoraJoin = false;
-        sleepLora();      
+        printMsg(F("xjoinloraCould not Join to Network"));        
+        sleepLora();        
+      } else if (strLoraSerial.indexOf(F("configure DR")) >= 0) {
+        isLoraJoin = true;
+        printMsg(F("xjoinloraJoin Success"));        
+        sleepLora();            
+      } else if (strLoraSerial.endsWith(F("send success"))) {
+        sleepLora();            
       } else if (strLoraSerial.endsWith(F("Go to Sleep"))) {                
         isCpuSleepEn = true;                         
       } else if (strLoraSerial.endsWith(F("Wake up."))) {
@@ -205,49 +204,6 @@ void readBattery() {
   }
   batVolt /= batSampNum;   
   batVolt = ( batVolt / 1023 ) * 2.56 * 2 * batCalb;  
-}
-void fetch(const uint8_t ch) { 
-  String str;  
-  usbSerial.print(F("xanval"));    
-  str = '0' + String(ch);
-  usbSerial.print(str.substring(str.length() - 2));    
-  usbSerial.println(an[ch], 2);
-  usbSerial.flush();    
-}
-void printConf() {
-  if (!isUsb) {
-    return;
-  }
-  String str;
-  // FETCH
-  for (uint8_t ch = 0; ch < numAn; ch++) {
-    fetch(ch);       
-  } 
-  // DEVICE
-  usbSerial.println(F("xdeviceeLoraWAN Wireless TH"));
-  usbSerial.flush();
-  // VERSION
-  usbSerial.println(F("xversionFirmware 1.0.1"));
-  usbSerial.flush();
-  // CHANNELS    
-  for (uint8_t i = 0; i < (sizeof(conf.anf32) / sizeof(conf.anf32[0])); i++) {
-    usbSerial.print(F("xanf32"));    
-    str = '0' + String(i);
-    usbSerial.print(str.substring(str.length() - 2));    
-    usbSerial.println(conf.anf32[i], 2); 
-    usbSerial.flush();   
-  }  
-  // LORAWAN   
-  for (uint8_t i = 0; i < sizeof(conf.lru08); i++) {    
-    usbSerial.print(F("xlru08"));    
-    str = '0' + String(i);
-    usbSerial.print(str.substring(str.length() - 2));    
-    usbSerial.println(conf.lru08[i]);
-    usbSerial.flush();    
-  } 
-  // LORAWAN KEYS
-  delay(10);         
-  loraSerial.println(F("at+get_config=lora:status"));   
 }
 void loadConf() {
   EEPROM.get(0, conf);  
@@ -332,6 +288,68 @@ void setUsbSerial() {
     pwrDownAdc();
     pwrDownRef(); 
   }      
+}
+void printAll() {
+  printChFetch();
+  printMsg(F("xdeviceeLoraWAN Wireless TH"));   
+  printMsg(F("xversionFirmware 1.0.1"));
+  printChConf();
+  printLoraConf();
+  printLoraKeys();
+  printMsg(F("xjoinloraJoining to Network .."));
+}
+void printMsg(String msg) {
+  if (!isUsb) {
+    return;
+  }
+  usbSerial.println(msg);
+  usbSerial.flush();
+}
+void printChFetch() {
+  if (!isUsb) {
+    return;
+  }
+  String str;
+  for (uint8_t ch = 0; ch < numAn; ch++) {      
+    usbSerial.print(F("xanval"));    
+    str = '0' + String(ch);
+    usbSerial.print(str.substring(str.length() - 2));    
+    usbSerial.println(an[ch], 2);
+    usbSerial.flush();       
+  }
+}
+void printChConf() {
+  if (!isUsb) {
+    return;
+  }
+  String str;
+  for (uint8_t i = 0; i < (sizeof(conf.anf32) / sizeof(conf.anf32[0])); i++) {
+    usbSerial.print(F("xanf32"));    
+    str = '0' + String(i);
+    usbSerial.print(str.substring(str.length() - 2));    
+    usbSerial.println(conf.anf32[i], 2); 
+    usbSerial.flush();   
+  }  
+}
+void printLoraConf() {
+  if (!isUsb) {
+    return;
+  }
+  String str;
+  for (uint8_t i = 0; i < sizeof(conf.lru08); i++) {    
+    usbSerial.print(F("xlru08"));    
+    str = '0' + String(i);
+    usbSerial.print(str.substring(str.length() - 2));    
+    usbSerial.println(conf.lru08[i]);
+    usbSerial.flush();    
+  } 
+}
+void printLoraKeys() {
+  if (!isUsb) {
+    return;
+  }
+  delay(10);         
+  loraSerial.println(F("at+get_config=lora:status")); 
 }
 void pwrDownUsb() {
   USBDevice.detach();
