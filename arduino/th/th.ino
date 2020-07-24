@@ -174,7 +174,7 @@ void readUsbSerial() {
         EEPROM.put(0, conf);
         resetCpu();     
       } else if (strUsbSerial.startsWith(F("xreport"))) {
-        wakeLora();      
+        wakeLora();           
       }
       strUsbSerial = "";
     }
