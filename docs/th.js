@@ -82,6 +82,7 @@
             lorawanBuf.push('at+set_config=lora:' + items[i].id + ':' + items[i].value + '\r\n');            
           }                                 
         }
+        lorawanBuf.push('at+set_config=lora:adr:0' + '\r\n');
         view = encoder.encode(str);      
         port.send(view);
         lorawanBuf.push('xsave\r\n');
