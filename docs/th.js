@@ -74,6 +74,8 @@
       let view;
       let str = '';               
       if (lorawanForm.checkValidity()) {
+        lorawanBuf.push('xlora_conf_mode\r\n');
+        lorawanBuf.push('at+version\r\n');
         items = lorawanForm.querySelectorAll('input,select');                
         for (let i = 0; i < items.length; i++) {          
           if (items[i].id[0] == 'x') {           
